@@ -12,14 +12,18 @@
         <label for="password">Password</label>
         <input type="password" id="password" v-model="password" required>
       </div>
-      <p style="margin-bottom: 10px;">Login as <span style="color: navajowhite; cursor: pointer;">Admin</span></p>
-      <button type="submit" to="/dashboard">Login</button>
+      <p style="margin-bottom: 10px;">
+        Login as <span style="color: navajowhite; cursor: pointer;" @click="$router.push('/admin_login')">Admin</span>
+      </p>
+      <button type="submit">Login</button>
     </form>
   </div>
 </div>
 </template>
 
 <script>
+import router from '../router'
+
 export default {
   data() {
     return {
@@ -32,7 +36,7 @@ export default {
       try {
         const response = await fetch('/api/auth/local', {
           method: 'POST',
-          headers: {
+          headers: {    
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
@@ -44,7 +48,7 @@ export default {
         if (response.status === 200) {
           const data = await response.json()
           localStorage.setItem('jwt', data.jwt)
-          this.$router.push('/')
+          router.push('/')
         } else {
           const error = await response.json()
           alert(error.message)
@@ -105,5 +109,10 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+button:hover {
+      background-color: navajowhite;
+      color: black;
+    }
 </style>
+
 
